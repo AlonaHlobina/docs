@@ -9,7 +9,7 @@
 import { stat, readFile, writeFile, readdir } from 'fs/promises'
 import path from 'path'
 import program from 'commander'
-import { execSync } from 'child_process'
+import { execSync, execFileSync } from 'child_process'
 import mkdirp from 'mkdirp'
 import rimraf from 'rimraf'
 import getOperations from './utils/get-operations.js'
@@ -100,8 +100,19 @@ async function getDereferencedFiles() {
   )
   try {
     console.log(`bundle -o ${tempDocsDir} ${commandParameters}`)
-    execSync(
-      `${path.join(githubRepoDir, 'bin/openapi')} bundle -o ${tempDocsDir} ${commandParameters}`,
+    // Split commandParameters into an array for use with execFileSync, if not already an array
+    const bundleArgs = [
+      'bundle',
+      '-o',
+      tempDocsDir,
+      // Handle case where commandParameters is a string, e.g. "--foo bar"
+      ...(Array.isArray(commandParameters)
+        ? commandParameters
+        : (commandParameters ? commandParameters.split(' ') : []))
+    ];
+    execFileSync(
+      path.join(githubRepoDir, 'bin/openapi'),
+      bundleArgs,
       { stdio: 'inherit' }
     )
   } catch (error) {
