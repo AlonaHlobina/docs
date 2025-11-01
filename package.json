@@ -173,7 +173,7 @@
     "sass": "^1.62.1",
     "start-server-and-test": "^2.0.13",
     "strip-ansi": "^7.0.1",
-    "supertest": "^6.1.6",
+    "supertest": "^7.1.4",
     "typescript": "^5.7.3",
     "url-template": "^3.1.0",
     "website-scraper": "^4.2.3",
